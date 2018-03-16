@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "ng": "ng",
+    "server": "node serve.js",
     "start": "ng serve",
     "build": "ng build --prod",
     "test": "ng test",
