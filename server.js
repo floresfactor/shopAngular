@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var mongoose   = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/shop'); // connect to our database
+mongoose.connect('mongodb://jose:qwertyuiop@ds215709.mlab.com:15709/tienda'); // connect to our database
 
 var port = process.env.PORT || 8080;        // set our port
 
