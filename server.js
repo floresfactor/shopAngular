@@ -7,6 +7,7 @@ var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var Producto = require('./models/producto');
 var Pedido = require('./models/pedido');
+var Usuario = require('./models/usuario');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -61,16 +62,55 @@ router.route('/productos')
     });
 
     // more routes for our API will happen here
-    router.route('/pedidos')
-    
-        //create a pedido (accessed at POST /api/pedido)
-        .post(function(req,res){
-            var pedido = new Pedido(); // create a new instance of the producto model
-            pedido.producto = req.body.producto; // set the productos name (comes from the request)
-            pedido.total = req.body.total; // set the productos name (comes from the request)
-        
+router.route('/usuarios')
 
-            /*total: Number,
+//create a producto (accessed at POST /api/productos)
+.post(function(req,res){
+    var usuario = new Usuario(); // create a new instance of the producto model
+    usuario.nombre = req.body.nombre; // set the productos name (comes from the request)
+    usuario.apellido = req.body.apellido; // set the productos name (comes from the request)
+    usuario.domicilio = req.body.domicilio; // set the productos name (comes from the request)
+    
+    //save the producto and check for errors
+    usuario.save(function(err){
+        if(err)
+            res.send(err);
+        res.json({ message: 'usuario creado'});
+    });
+})
+
+//Get all productos (accessed at POST /api/productos)
+.get(function(req,res){
+    Usuario.find(function(err,usuarios){
+        if(err)
+            res.send(err);
+            res.json(usuarios);
+    });
+});
+
+
+  
+
+    router.route('/pedidos/productos/:producto_id')
+
+         //create a pedido (accessed at POST /api/pedido)
+         .post(function(req,res){
+            var pedido = new Pedido();
+            Producto.findById(req.params.producto_id, function(err, producto){
+                if(err)
+                    res.send(err);
+                pedido.total = req.body.total; //dato a actualizar
+                pedido.producto = producto;
+    
+                //save the producto
+                    pedido.save(function(err){
+                        if(err)
+                            res.send(err);
+                        res.json({message: 'Producto agregado al pedido '+ pedido._id});
+                });
+            });
+             
+           /* 
     iva: Number,
     subtotal: Number,
     producto: ProductoSchema,
@@ -82,16 +122,19 @@ router.route('/productos')
                     res.send(err);
                 res.json({ message: 'pedido creado'});
             });
-        })
-    
-        //Get all productos (accessed at POST /api/productos)
-        .get(function(req,res){
-            Pedido.find(function(err,pedidos){
-                if(err)
-                    res.send(err);
-                    res.json(pedidos);
-            });
         });
+
+          // more routes for our API will happen here
+    router.route('/pedidos')
+    //Get all productos (accessed at POST /api/productos)
+    .get(function(req,res){
+        var pedido = new Pedido();
+        Pedido.find(function(err,pedidos){
+            if(err)
+                res.send(err);
+                res.json(pedidos);
+        });
+    });
 
 router.route('/productos/:producto_id')
 
