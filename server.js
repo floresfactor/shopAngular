@@ -6,6 +6,7 @@ var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var Producto = require('./models/producto');
+var Pedido = require('./models/pedido');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -50,7 +51,7 @@ router.route('/productos')
         });
     })
 
-    //create a producto (accessed at POST /api/productos)
+    //Get all productos (accessed at POST /api/productos)
     .get(function(req,res){
         Producto.find(function(err,productos){
             if(err)
@@ -58,6 +59,83 @@ router.route('/productos')
                 res.json(productos);
         });
     });
+
+    // more routes for our API will happen here
+    router.route('/pedidos')
+    
+        //create a pedido (accessed at POST /api/pedido)
+        .post(function(req,res){
+            var pedido = new Pedido(); // create a new instance of the producto model
+            pedido.producto = req.body.producto; // set the productos name (comes from the request)
+            pedido.total = req.body.total; // set the productos name (comes from the request)
+        
+
+            /*total: Number,
+    iva: Number,
+    subtotal: Number,
+    producto: ProductoSchema,
+    precio: Number*/
+            
+            //save the producto and check for errors
+            pedido.save(function(err){
+                if(err)
+                    res.send(err);
+                res.json({ message: 'pedido creado'});
+            });
+        })
+    
+        //Get all productos (accessed at POST /api/productos)
+        .get(function(req,res){
+            Pedido.find(function(err,pedidos){
+                if(err)
+                    res.send(err);
+                    res.json(pedidos);
+            });
+        });
+
+router.route('/productos/:producto_id')
+
+    //get the producto with that id 
+    .get(function(req,res){
+        Producto.findById(req.params.producto_id, function(err, producto){
+            if(err)
+                res.send(err);
+            res.json(producto);
+
+
+        });
+
+    });
+
+router.route('/productos/:producto_id')
+    .put(function(req,res){
+        Producto.findById(req.params.producto_id, function(err, producto){
+            if(err)
+                res.send(err);
+            producto.nombre = req.body.nombre; //dato a actualizar
+            producto.precio = req.body.precio; //dato a actualizar
+
+            //save the producto
+                producto.save(function(err){
+                    if(err)
+                        res.send(err);
+                    res.json({message: 'Producto actualizado'});
+            });
+        });
+    })
+    //delete the bear with this
+    .delete(function(req,res){
+        Producto.remove({
+            _id: req.params.producto_id
+        }, function(err,bear){
+            if(err)
+                res.send(err);
+            res.json({message:'se borro el id = '+ req.params.producto_id});
+        
+
+        })
+
+    })
 
 
 
