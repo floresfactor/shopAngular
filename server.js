@@ -57,7 +57,10 @@ router.route('/productos')
         Producto.find(function(err,productos){
             if(err)
                 res.send(err);
+
+
                 res.json(productos);
+
         });
     });
 
@@ -95,68 +98,109 @@ router.route('/usuarios')
 
          //create a pedido (accessed at POST /api/pedido)
          .post(function(req,res){
+            //var producto = new Producto(); 
             var pedido = new Pedido();
-            Producto.findById(req.params.producto_id, function(err, producto){
+            Producto.findById(req.params.producto_id, function(err, productos){
                 if(err)
                     res.send(err);
                 pedido.total = req.body.total; //dato a actualizar
-                pedido.producto = producto;
+                pedido.producto = productos;
     
                 //save the producto
                     pedido.save(function(err){
                         if(err)
                             res.send(err);
-                        res.json({message: 'Producto agregado al pedido '+ pedido._id});
+                        res.json({message: 'Producto agregado al pedido '});
                 });
             });
              
-           /* 
-    iva: Number,
-    subtotal: Number,
-    producto: ProductoSchema,
-    precio: Number*/
-            
-            //save the producto and check for errors
-            pedido.save(function(err){
+        })
+
+        .put(function(req,res){
+            Producto.findById(req.params.producto_id, function(err, productos){
                 if(err)
                     res.send(err);
-                res.json({ message: 'pedido creado'});
+                pedido.producto.nombre = req.body.nombre; //dato a actualizar
+                pedido.producto.precio = req.body.precio; //dato a actualizar
+    
+                //save the pedido
+                    pedido.save(function(err){
+                        if(err)
+                            res.send(err);
+                        res.json({message: 'Pedido actualizado'});
+                });
             });
-        });
+        })
+
+
 
           // more routes for our API will happen here
     router.route('/pedidos')
     //Get all productos (accessed at POST /api/productos)
     .get(function(req,res){
-        var pedido = new Pedido();
         Pedido.find(function(err,pedidos){
             if(err)
                 res.send(err);
-                res.json(pedidos);
+
+            Producto.find({}, )
+            res.json(pedidos);
         });
     });
+
+
+    /*router.route('/pedidos/:pedido_id')
+    .put(function(req,res){
+        Pedido.findById(req.params.producto_id, function(err, productos){
+            if(err)
+                res.send(err);
+            producto.nombre = req.body.nombre; //dato a actualizar
+            producto.precio = req.body.precio; //dato a actualizar
+
+            //save the producto
+                pedido.save(function(err){
+                    if(err)
+                        res.send(err);
+                    res.json({message: 'Producto actualizado'});
+            });
+        });
+    })
+    //delete the bear with this
+    .delete(function(req,res){
+        Producto.remove({
+            _id: req.params.producto_id
+        }, function(err,bear){
+            if(err)
+                res.send(err);
+            res.json({message:'se borro el id = '+ req.params.producto_id});
+        
+
+        });
+
+    })*/
+
+
 
 router.route('/productos/:producto_id')
 
     //get the producto with that id 
     .get(function(req,res){
-        Producto.findById(req.params.producto_id, function(err, producto){
+        Producto.findById(req.params.producto_id, function(err, productos){
             if(err)
                 res.send(err);
-            res.json(producto);
+            res.json(productos);
 
 
         });
 
-    });
+    })
 
-router.route('/productos/:producto_id')
     .put(function(req,res){
         Producto.findById(req.params.producto_id, function(err, producto){
             if(err)
                 res.send(err);
             producto.nombre = req.body.nombre; //dato a actualizar
             producto.precio = req.body.precio; //dato a actualizar
+
 
             //save the producto
                 producto.save(function(err){
@@ -176,9 +220,43 @@ router.route('/productos/:producto_id')
             res.json({message:'se borro el id = '+ req.params.producto_id});
         
 
-        })
+        });
 
+    });
+
+
+
+router.route('/usuarios/:usuario_id')
+    
+    .put(function(req,res){
+        Usuario.findById(req.params.usuario_id, function(err, usuario){
+            if(err)
+                res.send(err);
+            usuario.nombre = req.body.nombre; //dato a actualizar
+            usuario.apellido = req.body.apellido; //dato a actualizar
+            usuario.domicilio = req.body.domicilio; //dato a actualizar
+
+            //save the producto
+                usuario.save(function(err){
+                    if(err)
+                        res.send(err);
+                    res.json({message: 'Usuario actualizado'});
+            });
+        });
     })
+    //delete the bear with this
+    .delete(function(req,res){
+        Usuario.remove({
+            _id: req.params.usuario_id
+        }, function(err,usuario){
+            if(err)
+                res.send(err);
+            res.json({message:'se borro el id = '+ req.params.producto_id});
+        
+
+        });
+
+    });
 
 
 
