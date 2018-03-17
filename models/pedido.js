@@ -10,26 +10,26 @@ var PedidoSchema = new Schema({
     producto: [{ type: Schema.Types.ObjectId, ref: 'Producto' }]
 });
 
-// PedidoSchema.pre('save', function (next) {
-//     const doc = this;
-//     const ids = doc.producto.map(ped => {
-//         return { _id: ped._id };
-//     });
-//     console.log(ids);
-//     ProductoSchema
-//         .find({ $or: ids }, (err, productos) => {
-//             doc.subtotal = 0;
-//             doc.iva = 0;
-//             doc.total = 0;
+PedidoSchema.pre('save', function (next) {
+    const doc = this;
+    const ids = doc.producto.map(ped => {
+        return mongoose.Types.ObjectId(ped.toString());
+    });
+    console.log(ids);
+    ProductoSchema
+        .find({ _id: { $in: ids } }, (err, productos) => {
+            doc.subtotal = 0;
+            doc.iva = 0;
+            doc.total = 0;
 
-//             productos.forEach(prod => {
-//                 doc.subtotal += prod.precio;
-//                 doc.iva += prod.precio * 0.16;
-//                 doc.total += doc.iva + doc.subtotal
-//             });
+            productos.forEach(prod => {
+                doc.subtotal += prod.precio;
+                doc.iva += prod.precio * 0.16;
+                doc.total += doc.iva + doc.subtotal
+            });
 
-//             next();
-//         });
-// });
+            next();
+        });
+});
 
 module.exports = mongoose.model('Pedido', PedidoSchema);
