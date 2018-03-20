@@ -71,7 +71,7 @@ router.route('/pedidos/productos/:cantidad/:producto_id')
 
     });
 
-router.route('/pedidos/:pedido_id/producto/:producto_id')
+router.route('/pedidos/:pedido_id/productos/:producto_id')
     .delete(function (req, res) {
         Pedido.findById(req.params.pedido_id, (err, pedido) => {
             if (err) return res.send(err);

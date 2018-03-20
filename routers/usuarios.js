@@ -84,7 +84,7 @@ router.route('/usuarios/:usuario_id')
         });
     });
 
-router.route('/usuarios/:usuario_id/pedido/:pedido_id')
+router.route('/usuarios/:usuario_id/pedidos/:pedido_id')
     // Agrega el pedido al usuario
     .post(function (req, res) {
         const usuario_id = req.params.usuario_id;

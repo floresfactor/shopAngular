@@ -27,7 +27,7 @@ var router = express.Router();              // get an instance of the express Ro
 // middleware to use for all requests
 router.use(function (req, res, next) {
     // do logging
-    console.log('Something is happening.');
+    console.log('algo esta pasando...');
     next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -45,5 +45,5 @@ app.use('/api', productosRouter);
 // START THE SERVER
 // =============================================================================
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log('Corriendo en el puerto:' + port);
 
