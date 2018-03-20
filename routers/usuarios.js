@@ -23,7 +23,7 @@ router.route('/usuarios').get(function (req, res) {
         });
 });
 
-router.route('/usuario').post(function (req, res) {
+router.route('/usuarios').post(function (req, res) {
     var usuario = new Usuario();
     usuario.nombre = req.body.nombre;
     usuario.apellido = req.body.apellido;
@@ -37,7 +37,7 @@ router.route('/usuario').post(function (req, res) {
     });
 })
 
-router.route('/usuario/:usuario_id')
+router.route('/usuarios/:usuario_id')
     .get((req, res) => {
         Usuario.findById(req.params.usuario_id, (err, usuario) => {
             if (err)
@@ -84,7 +84,7 @@ router.route('/usuario/:usuario_id')
         });
     });
 
-router.route('/usuario/:usuario_id/pedido/:pedido_id')
+router.route('/usuarios/:usuario_id/pedido/:pedido_id')
     // Agrega el pedido al usuario
     .post(function (req, res) {
         const usuario_id = req.params.usuario_id;

@@ -20,7 +20,7 @@ router.route('/productos')
 
 
 //create a producto (accessed at POST /api/productos)
-router.route('/producto').post(function (req, res) {
+router.route('/productos').post(function (req, res) {
     var producto = new Producto(); // create a new instance of the producto model
     producto.nombre = req.body.nombre; // set the productos name (comes from the request)
     producto.precio = req.body.precio;
@@ -33,7 +33,7 @@ router.route('/producto').post(function (req, res) {
     });
 })
 
-router.route('/producto/:producto_id')
+router.route('/productos/:producto_id')
     //get the producto with that id 
     .get(function (req, res) {
         Producto.findById(req.params.producto_id, function (err, productos) {

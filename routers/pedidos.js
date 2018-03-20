@@ -19,7 +19,7 @@ router.route('/pedidos')
         });
     });
 
-router.route('/pedido/:pedido_id')
+router.route('/pedidos/:pedido_id')
     .get((req, res) => {
         const pedido_id = req.params.pedido_id;
 
@@ -47,7 +47,7 @@ router.route('/pedido/:pedido_id')
         })
     });
 
-router.route('/pedido/productos/:cantidad/:producto_id')
+router.route('/pedidos/productos/:cantidad/:producto_id')
     //create a pedido (accessed at POST /api/pedido)
     .post(function (req, res) {
         //var producto = new Producto(); 
@@ -71,7 +71,7 @@ router.route('/pedido/productos/:cantidad/:producto_id')
 
     });
 
-router.route('/pedido/:pedido_id/producto/:producto_id')
+router.route('/pedidos/:pedido_id/producto/:producto_id')
     .delete(function (req, res) {
         Pedido.findById(req.params.pedido_id, (err, pedido) => {
             if (err) return res.send(err);
@@ -87,7 +87,7 @@ router.route('/pedido/:pedido_id/producto/:producto_id')
         });
     });
 
-router.route('/pedido/:pedido_id/productos/:cantidad/:producto_id')
+router.route('/pedidos/:pedido_id/productos/:cantidad/:producto_id')
     .put(function (req, res) {
 
         const pedido_id = req.params.pedido_id;
